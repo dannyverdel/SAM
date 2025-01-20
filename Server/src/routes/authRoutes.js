@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const requireAuth = require('../middlewares/requireAuth');
 const User = mongoose.model('User');
 
 const router = express.Router();
@@ -36,11 +37,21 @@ router.post('/api/signin', async (req, res) => {
 
     try {
         await user.comparePassword(password);
-        const token = jwt.sign({ userId: user._id, date: new Date() }, process.env.JWT_SECRET);
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
         res.send({ token });
     } catch (err) {
         return res.status(422).send({ error: 'Ongeldige gebruikersnaam en wachtwoord' });
     }
 });
+
+router.get('/api/account', requireAuth, async (req, res) => {
+    const user = await User.findById(req.user._id);
+    res.send(user);
+})
+
+Date.prototype.addHours = function (h) {
+    this.setHours(this.getHours() + h);
+    return this;
+}
 
 module.exports = router;
