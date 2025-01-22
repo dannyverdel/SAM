@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import api from '../api/api';
+import Cookies from 'js-cookie';
 
 const authReducer = (state, action) => {
     switch (action.type) {
@@ -22,7 +23,7 @@ const signIn = (dispatch) => {
     return async (email, password, callback) => {
         try {
             const response = await api.post('/api/signin', { email, password });
-            localStorage.setItem('token', response.data.token);
+            Cookies.set('token', response.data.token, { expires: 30, secure: true, sameSite: 'strict' });
             dispatch({ type: 'signin', payload: response.data.token });
             if (callback) {
                 callback();
@@ -35,7 +36,7 @@ const signIn = (dispatch) => {
 
 const tryLocalSignin = (dispatch) => {
     return (callback) => {
-        const token = localStorage.getItem('token');
+        const token = Cookies.get('token');
         if (token) {
             dispatch({ type: 'signin', payload: token });
 
@@ -47,9 +48,12 @@ const tryLocalSignin = (dispatch) => {
 }
 
 const getMe = (dispatch) => {
-    return async () => {
+    return async (callback) => {
         try {
             const response = await api.get('/api/account');
+            if (callback) {
+                callback(response.data);
+            }
             dispatch({ type: 'get_me', payload: response.data });
         } catch (err) {
             dispatch({ type: 'signout' });
@@ -58,9 +62,19 @@ const getMe = (dispatch) => {
     }
 }
 
+const setup2fa = (dispatch) => {
+    return async (secret) => {
+        try {
+            await api.put('/api/setup-2fa', { totpSecret: secret });
+        } catch (err) {
+            dispatch({ type: 'add_error', payload: err.response.data.error ?? 'Er is iets fout gegaan bij het instellen van 2FA' });
+        }
+    }
+}
+
 const signOut = (dispatch) => {
     return (callback) => {
-        localStorage.removeItem('token');
+        Cookies.remove('token');
         dispatch({ type: 'signout' });
         if (callback) {
             callback();
@@ -76,6 +90,6 @@ const clearErrorMessage = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signIn, signOut, getMe, clearErrorMessage, tryLocalSignin },
+    { signIn, signOut, getMe, setup2fa, clearErrorMessage, tryLocalSignin },
     { token: null, errorMessage: '' }
 );

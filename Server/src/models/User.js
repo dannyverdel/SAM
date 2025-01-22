@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    totpSecret: {
+        type: String,
+        required: false,
+        trim: true
     }
 })
 

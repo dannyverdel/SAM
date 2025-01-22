@@ -49,6 +49,18 @@ router.get('/api/account', requireAuth, async (req, res) => {
     res.send(user);
 })
 
+router.put('/api/setup-2fa', requireAuth, async (req, res) => {
+    const { totpSecret } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    user.totpSecret = totpSecret;
+
+    await user.save();
+
+    res.send(user);
+})
+
 Date.prototype.addHours = function (h) {
     this.setHours(this.getHours() + h);
     return this;

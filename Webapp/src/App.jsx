@@ -2,6 +2,8 @@ import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } 
 
 import { Provider as AuthProvider } from './context/authContext'
 
+import MFA from './views/auth/MFA'
+
 import Nav from './components/Nav'
 
 import Login from './views/auth//Login'
@@ -17,6 +19,7 @@ import ResourcesIndex from './views/resources/Index'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route path='/mfa' element={<MFA />} />
       <Route path='/login' element={<Login />} />
       <Route path="/" element={<Nav />}>
         <Route path="/" element={<DashboardIndex />} />

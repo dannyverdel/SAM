@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useContext, useState } from 'react';
 import { Context as AuthContext } from '../context/authContext';
+import Cookies from 'js-cookie';
 
 const Nav = () => {
     const navigate = useNavigate();
@@ -18,8 +19,9 @@ const Nav = () => {
     }, []);
 
     useEffect(() => {
+        const mfa = Cookies.get('mfa');
         if (!loading) {
-            if (!state.token) {
+            if (!state.token || !mfa || mfa == undefined) {
                 navigate('/login');
             } else {
                 getMe();

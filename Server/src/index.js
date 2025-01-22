@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-require('./models/User');
-require('./models/Person');
-require('./models/Resource');
-require('./models/Incident');
+require('./models/User')
+require('./models/Person')
+require('./models/Resource')
+require('./models/Incident')
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -18,8 +18,6 @@ app.use(cors({
     origin: '*',
     credentials: true
 }));
-
-app.use(bodyParser.json());
 
 app.use(require('./routes/authRoutes'));
 app.use(require('./routes/personRoutes'));

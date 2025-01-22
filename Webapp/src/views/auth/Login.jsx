@@ -12,7 +12,7 @@ const Login = () => {
 
     useEffect(() => {
         if (state.token) {
-            navigate('/');
+            navigate('/mfa');
         }
     }, [state.token])
 
@@ -26,6 +26,7 @@ const Login = () => {
                                 <img src="/SAM-IRS-LOGO.png" className="img-fluid my-3"
                                     width="400px" alt="profile" />
                             </div>
+                            <h1 className="text-center">Login</h1>
                             <div className="mb-3">
                                 <input type="text" className="form-control" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
