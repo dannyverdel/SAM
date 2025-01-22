@@ -75,6 +75,7 @@ const setup2fa = (dispatch) => {
 const signOut = (dispatch) => {
     return (callback) => {
         Cookies.remove('token');
+        Cookies.remove('mfa')
         dispatch({ type: 'signout' });
         if (callback) {
             callback();

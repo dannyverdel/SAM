@@ -6,18 +6,22 @@ const requireAuth = require('../middlewares/requireAuth');
 const router = express.Router();
 
 router.get('/api/persons', requireAuth, async (req, res) => {
-    const persons = await Person.find({ active: true }).sort({ name: 1 });
+    const persons = await Person.find({}).sort({ name: 1 });
     res.send(persons);
 });
 
 router.get('/api/persons/:id', requireAuth, async (req, res) => {
-    const person = await Person.findById(req.params.id);
+    try {
+        const person = await Person.findById(req.params.id);
 
-    if (!person) {
+        if (!person) {
+            return res.status(404).send('Persoon niet gevonden');
+        }
+
+        res.send(person);
+    } catch (err) {
         return res.status(404).send('Persoon niet gevonden');
     }
-
-    res.send(person);
 })
 
 router.post('/api/persons', requireAuth, async (req, res) => {
