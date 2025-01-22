@@ -4,6 +4,7 @@ import encode from "base32-encode";
 import { Context as AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2'
 
 const MFA = () => {
     const { state, setup2fa, getMe, } = useContext(AuthContext);
@@ -67,7 +68,15 @@ const MFA = () => {
         if (isValid) {
             setup2fa(secret);
             Cookies.set('mfa', 'true', { expires: 0.0416666667, secure: true, sameSite: 'strict' });
-            navigate('/');
+            Swal.fire({
+                icon: 'success',
+                title: 'U wordt doorgestuurd',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            }).then(() => {
+                navigate('/');
+            })
         }
     };
 
