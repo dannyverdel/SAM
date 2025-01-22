@@ -31,7 +31,7 @@ const Sidebar = () => {
                                     </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a href="/resources" className="nav-link">
+                                    <a href="/middelen" className="nav-link">
                                         <i className="fas fa-truck-moving nav-icon"></i>
                                         <p>Middelen</p>
                                     </a>
