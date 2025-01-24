@@ -58,7 +58,7 @@ const incidentSchema = new mongoose.Schema({
     location: locationSchema,
     source: {
         type: String,
-        required: true
+        required: false
     },
     incidentType: {
         type: String,

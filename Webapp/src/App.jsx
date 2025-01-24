@@ -3,6 +3,7 @@ import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } 
 import { Provider as AuthProvider } from './context/authContext'
 import { Provider as PersonsProvider } from './context/personsContext'
 import { Provider as ResourcesProvider } from './context/resourcesContext'
+import { Provider as IncidentsProvider } from './context/incidentsContext'
 
 import MFA from './views/auth/MFA'
 
@@ -12,7 +13,7 @@ import Login from './views/auth//Login'
 
 import DashboardIndex from './views/dashboard/Index'
 import IncidentsIndex from './views/incidents/Index'
-
+import IncidentsDetail from './views/incidents/Detail'
 import PersonsIndex from './views/persons/Index'
 import PersonsDetail from './views/persons/Detail'
 import ResourcesIndex from './views/resources/Index'
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<Nav />}>
         <Route path="/" element={<DashboardIndex />} />
         <Route path="/incidenten" element={<IncidentsIndex />} />
+        <Route path="/incidenten/:id" element={<IncidentsDetail />} />
         <Route path="/personen" element={<PersonsIndex />} />
         <Route path="/personen/:id" element={<PersonsDetail />} />
         <Route path="/middelen" element={<ResourcesIndex />} />
@@ -41,7 +43,9 @@ function App() {
       <AuthProvider>
         <PersonsProvider>
           <ResourcesProvider>
-            <RouterProvider router={router} />
+            <IncidentsProvider>
+              <RouterProvider router={router} />
+            </IncidentsProvider>
           </ResourcesProvider>
         </PersonsProvider>
       </AuthProvider>

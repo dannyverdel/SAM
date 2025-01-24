@@ -6,7 +6,7 @@ const requireAuth = require('../middlewares/requireAuth');
 const router = express.Router();
 
 router.get('/api/incidents', requireAuth, async (req, res) => {
-    const incidents = await Incident.find({}, 'date location incidentType description').sort({ name: 1 });
+    const incidents = await Incident.find({}, 'date location incidentType description').sort({ date: -1 });
     res.send(incidents);
 });
 
